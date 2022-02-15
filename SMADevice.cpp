@@ -144,10 +144,10 @@ namespace SMA{
     bool Device::device_read_all_registers()
     {
         bool result = true;
-        power = get_power(&result);
-        dcWatt = get_dcWatt(&result);
-        mainsFeedIn = get_mainsFeedIn(&result);
-        mainsSupply = get_mainsSupply(&result);
+        power = get_power(false,&result);
+        dcWatt = get_dcWatt(false,&result);
+        mainsFeedIn = get_mainsFeedIn(false,&result);
+        mainsSupply = get_mainsSupply(false,&result);
         return result;
     }
 

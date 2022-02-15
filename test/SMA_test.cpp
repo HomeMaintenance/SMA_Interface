@@ -1,5 +1,5 @@
 #include <iostream>
-#include "SMAStorageBoy.h"
+#include <SMALIB.h>
 
 class Test{
 public:
@@ -17,10 +17,20 @@ private:
     int* val = nullptr;
 };
 
+void storageBoy_test(){
+    SMA::StorageBoy myStorageBoy("192.168.178.113");
+    myStorageBoy.read_all_registers();
+}
+
+void device_test(){
+    SMA::Device myDevice("192.168.178.128");
+    myDevice.read_all_registers();
+}
+
 int main(int argc, char* argv[]){
     Test test;
     test.increment();
-    SMA::StorageBoy myStorageBoy("192.168.178.113");
-    myStorageBoy.read_all_registers();
+    storageBoy_test();
+    device_test();
     return 0;
 }
