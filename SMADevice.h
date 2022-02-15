@@ -17,15 +17,17 @@ namespace SMA
          *
          * @param ipAddress Ip address of the device
          * @param port Port number of the device
+         * @param thread_start Start flag for cyclic operation
          */
-        explicit Device(const char *ipAddress, int port = 502);
+        explicit Device(const char *ipAddress, int port = 502, bool thread_start = false);
         /**
          * @brief Construct a new Device object
          *
          * @param ipAddress Ip address of the device
          * @param port Port number of the device
+         * @param thread_start Start flag for cyclic operation
          */
-        explicit Device(std::string ipAddress, int port = 502);
+        explicit Device(std::string ipAddress, int port = 502, bool thread_start = false);
         Device(const Device &other) = delete;
         ~Device() = default;
         /**
@@ -54,14 +56,14 @@ namespace SMA
          * @param ret Return status (true: success, false: fail)
          * @return unsigned int: Power value
          */
-        unsigned int get_power(bool *ret = nullptr);
+        unsigned int get_power(bool force = false, bool *ret = nullptr);
         /**
          * @brief Read dcWatt register
          *
          * @param ret Return status (true: success, false: fail)
          * @return unsigned int: DcWatt value
          */
-        unsigned int get_dcWatt(bool *ret = nullptr);
+        unsigned int get_dcWatt(bool force = false, bool *ret = nullptr);
         /**
          * @brief Get the feedIn to mains register
          *
@@ -70,7 +72,7 @@ namespace SMA
          * @param ret Return status (true: success, false: fail)
          * @return unsigned int: FeedIn to mains
          */
-        unsigned int get_mainsFeedIn(bool *ret = nullptr);
+        unsigned int get_mainsFeedIn(bool force = false, bool *ret = nullptr);
         /**
          * @brief Get the supply from mains register
          *
@@ -79,7 +81,7 @@ namespace SMA
          * @param ret Return status (true: success, false: fail)
          * @return unsigned int: Supply from mains
          */
-        unsigned int get_mainsSupply(bool *ret = nullptr);
+        unsigned int get_mainsSupply(bool force = false, bool *ret = nullptr);
 
         /**
          * @brief Test read the device
@@ -112,10 +114,11 @@ namespace SMA
         /**
          * @brief Initialize the device
          *
+         * @param thread_start Start flag for cyclic operation
          * Read constant device variables, such as slaveId_, physicalSusyId_, physicalSerialNumber_, model_
          *
          */
-        void deviceInit();
+        void deviceInit(bool thread_start = false);
         /**
          * @brief Parse device information from uint16_t[4] array
          *

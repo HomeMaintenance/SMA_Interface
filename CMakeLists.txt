@@ -18,12 +18,20 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(
+    PowerManagement
+    GIT_REPOSITORY https://github.com/HomeMaintenance/PowerManagement.git
+    GIT_TAG main
+)
+
+FetchContent_Declare(
     mqtt_interface
     GIT_REPOSITORY https://github.com/HomeMaintenance/Mqtt.git
     GIT_TAG main
 )
 
-FetchContent_MakeAvailable(ObserverModel ModbusDevice_Interface mqtt_interface)
+FetchContent_MakeAvailable(ObserverModel ModbusDevice_Interface mqtt_interface PowerManagement)
+
+add_subdirectory(test)
 
 add_library(
     SMADevice
@@ -38,7 +46,7 @@ add_library(
     SMAStorageBoy.h
     SMAStorageBoy.cpp
 )
-target_link_libraries(SMAStorageBoy PUBLIC SMADevice)
+target_link_libraries(SMAStorageBoy PUBLIC SMADevice PowerManagement)
 
 add_library(
     SMAMqttInterface
@@ -121,11 +129,9 @@ if(PROJECT_IS_TOP_LEVEL)
     set(DOXYGEN_EXTRACT_PRIVATE TRUE)
     set(DOXYGEN_WARN_IF_UNDOCUMENTED FALSE)
     set(DOXYGEN_OPTIMIZE_OUTPUT_FOR_C TRUE)
-    set(DOXYGEN_EXCLUDE_PATTERNS */build/*)
 
     doxygen_add_docs(doxygen_target
         ${CMAKE_SOURCE_DIR}
-        ALL
         COMMENT "Run doxygen_target"
     )
 endif()

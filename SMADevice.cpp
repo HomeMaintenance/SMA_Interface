@@ -15,10 +15,10 @@
     mbReg_mainsSupply(this, 30865, 1, " W")
 
 #define GENERATE_MB_GET_FUNC(type, mbRegister) \
-    type Device::get_##mbRegister(bool* ret){ \
+    type Device::get_##mbRegister(bool force, bool* ret){ \
         type retval = 0; \
         if(online){ \
-            retval = mbReg_##mbRegister.getValue(ret); \
+            retval = mbReg_##mbRegister.getValue(force, ret); \
         } \
         return (retval); \
     }
@@ -32,31 +32,32 @@
 
 
 namespace SMA{
-    Device::Device(const char* ipAddress, int port):
+    Device::Device(const char* ipAddress, int port, bool _thread_start):
         mb::Device(ipAddress, port),
         INIT_DEVICE_REGISTERS
     {
-        deviceInit();
+        deviceInit(_thread_start);
         return;
     }
 
-    Device::Device(std::string ipAddress, int port) :
+    Device::Device(std::string ipAddress, int port, bool _thread_start) :
         mb::Device(ipAddress, port),
         INIT_DEVICE_REGISTERS
     {
-        deviceInit();
+        deviceInit(_thread_start);
         return;
     }
 
-    void Device::deviceInit()
+    void Device::deviceInit(bool _thread_start)
     {
-        try {
+        try{
             parseDeviceInfo();
             online = true;
             bool test{false};
-            serialNumber_ = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_serialNumber.readRawData(&test).data(), 0));
-            model_ = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_model.readRawData(&test).data(), 0));
-            start_thread();
+            serialNumber_ = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_serialNumber.readRawData(false, &test).data(), 0));
+            model_ = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_model.readRawData(false, &test).data(), 0));
+            if(_thread_start)
+                start_thread();
         }
         catch (std::exception& e){
             std::cerr << e.what() << std::endl;
@@ -72,7 +73,7 @@ namespace SMA{
             throw connection_exception;
         }
         bool valid{false};
-        std::vector<uint16_t> return_value = mbReg_deviceInfo.readRawData(&valid);
+        std::vector<uint16_t> return_value = mbReg_deviceInfo.readRawData(false, &valid);
         if(!valid){
             throw connection_exception;
         }
@@ -84,11 +85,11 @@ namespace SMA{
         }
     }
 
-    unsigned int Device::get_power(bool* ret)
+    unsigned int Device::get_power(bool force, bool* ret)
     {
         int temp = 0;
         if(online){
-            temp = mbReg_power.getValue(ret);
+            temp = mbReg_power.getValue(force, ret);
         }
         if(temp < 0){
             temp = 0;
@@ -96,11 +97,11 @@ namespace SMA{
         return temp;
     }
 
-    unsigned int Device::get_dcWatt(bool* ret)
+    unsigned int Device::get_dcWatt(bool force, bool* ret)
     {
         int temp = 0;
         if(online){
-            temp = mbReg_dcWatt.getValue(ret);
+            temp = mbReg_dcWatt.getValue(force, ret);
         }
         if(temp < 0)
             temp = 0;
@@ -131,7 +132,7 @@ namespace SMA{
         bool ret_val = false;
         std::cout << "Test output" << std::endl;
         if(online){
-            model_ = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_model.readRawData(&ret_val).data(),0));
+            model_ = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_model.readRawData(false, &ret_val).data(),0));
             std::cout << "Model: " << model_ << ", valid: "<< ret_val << std::endl;
         }
         else{

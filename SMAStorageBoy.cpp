@@ -12,7 +12,7 @@
     type StorageBoy::get_##mbRegister(bool* ret){ \
         type retval = 0; \
         if(online){ \
-            retval = mbReg_##mbRegister.getValue(ret); \
+            retval = mbReg_##mbRegister.getValue(false, ret); \
         } \
         return (retval); \
     }
@@ -26,14 +26,14 @@
 
 namespace SMA {
     StorageBoy::StorageBoy(const char* ipAddress, int port):
-        Device(ipAddress,port),
+        Device(ipAddress,port), BatteryInverter(),
         INIT_STORAGEBOY_REGISTERS
     {
         storageBoyInit();
     }
 
     StorageBoy::StorageBoy(std::string ipAddress, int port):
-        Device(ipAddress, port),
+        Device(ipAddress, port), BatteryInverter(),
         INIT_STORAGEBOY_REGISTERS
     {
         storageBoyInit();
@@ -42,9 +42,9 @@ namespace SMA {
     bool StorageBoy::storageBoy_read_all_registers()
     {
         bool result = true;
-        soc = get_soc(&result);
-        dischargeCurrent = get_dischargeCurrent(&result);
-        chargeCurrent = get_chargeCurrent(&result);
+        _soc = get_soc(&result);
+        _dischargeCurrent = get_dischargeCurrent(&result);
+        _chargeCurrent = get_chargeCurrent(&result);
         return result;
     }
 
@@ -58,9 +58,42 @@ namespace SMA {
 
     void StorageBoy::storageBoyInit()
     {
-        maxDischargeCurrent = get_maxDischargeCurrent();
-        maxChargeCurrent = get_maxChargeCurrent();
+        _maxDischargeCurrent = get_maxDischargeCurrent();
+        _maxChargeCurrent = get_maxChargeCurrent();
     }
+
+    float StorageBoy::soc(){
+        return static_cast<float>(get_soc());
+    }
+
+    float StorageBoy::present_discharge(){
+        return static_cast<float>(get_dischargeCurrent());
+    }
+
+    float StorageBoy::present_charge(){
+        return static_cast<float>(get_dischargeCurrent());
+    }
+
+    float StorageBoy::charged_energy(){
+        return static_cast<float>(get_chargeCurrent());
+    }
+
+    float StorageBoy::max_capacity(){
+        return static_cast<float>(get_dischargeCurrent());
+    }
+
+    float StorageBoy::missing_charge(){
+        return static_cast<float>(get_dischargeCurrent());
+    }
+
+    float StorageBoy::max_charge_rate() const{
+        return static_cast<float>(_maxChargeCurrent);
+    }
+
+    float StorageBoy::max_discharge_rate() const{
+        return static_cast<float>(_maxDischargeCurrent);
+    }
+
 
     GENERATE_MB_GET_FUNC(unsigned int, soc);
     GENERATE_MB_GET_FUNC(unsigned int, dischargeCurrent);
@@ -78,7 +111,7 @@ namespace SMA {
         std::cout << "soc: " << get_soc(ret) << std::endl;
         std::cout << "dischargeCurrent: " << get_dischargeCurrent(ret) << std::endl;
         std::cout << "chargeCurrent: " << get_chargeCurrent(ret) << std::endl;
-        std::cout << "maxDischargeCurrent: " << get_maxDischargeCurrent(ret) << std::endl;
+        std::cout << "maxDischargeCurrent: "<< get_maxDischargeCurrent(ret) << std::endl;
         std::cout << "maxChargeCurrent: " << get_maxChargeCurrent(ret) << std::endl;
         std::cout << "online end: " << online << std::endl;
     }

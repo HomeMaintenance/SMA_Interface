@@ -1,12 +1,13 @@
 #pragma once
 #include "SMADevice.h"
+#include "BatteryInverter.h"
 
 namespace SMA {
     /**
      * @brief Interface to a SMA StorageBoy
      *
      */
-    class StorageBoy : virtual public Device
+    class StorageBoy : public Device, public BatteryInverter
     {
         public:
             /**
@@ -27,15 +28,25 @@ namespace SMA {
             ~StorageBoy() = default;
 
             /// Last read soc value from the device.
-            unsigned int soc{0};
+            unsigned int _soc{0};
             /// Last read discharge current value from the device.
-            unsigned int dischargeCurrent{0};
+            unsigned int _dischargeCurrent{0};
             /// Last read charge current value from the device.
-            unsigned int chargeCurrent{0};
+            unsigned int _chargeCurrent{0};
             /// Last read max discharge current value from the device (set once in #storageBoyInit).
-            unsigned int maxDischargeCurrent{0}; // only set once after init
+            unsigned int _maxDischargeCurrent{0}; // only set once after init
             /// Last read max charge current value from the device (set once in #storageBoyInit).
-            unsigned int maxChargeCurrent{0}; // only set once after init
+            unsigned int _maxChargeCurrent{0}; // only set once after init
+
+            // inherited abstract methods
+            virtual float soc() override;
+            virtual float present_discharge() override;
+            virtual float present_charge() override;
+            virtual float charged_energy() override;
+            virtual float max_capacity() override;
+            virtual float missing_charge() override;
+            virtual float max_charge_rate() const override;
+            virtual float max_discharge_rate() const override;
 
         private:
             /**

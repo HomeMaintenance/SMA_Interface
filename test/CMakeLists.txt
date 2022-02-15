@@ -1,0 +1,2 @@
+add_executable(testStorageBoy testStorageBoy.cpp)
+target_link_libraries(testStorageBoy PUBLIC SMALIB)

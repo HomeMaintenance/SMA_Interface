@@ -26,27 +26,27 @@ namespace SMA {
 
     void StorageBoyMqtt::storageboy_update()
     {
-        if(abs(static_cast<int>(storageBoy->soc)-static_cast<int>(_soc_old))>3 || first_run){
-            client->publish(base_topic+"soc",std::to_string(storageBoy->soc),1,true);
-            _soc_old = storageBoy->soc;
+        if(abs(static_cast<int>(storageBoy->_soc)-static_cast<int>(_soc_old))>3 || first_run){
+            client->publish(base_topic+"soc",std::to_string(storageBoy->_soc),1,true);
+            _soc_old = storageBoy->_soc;
         }
 
-        if(abs(static_cast<int>(storageBoy->dischargeCurrent)-static_cast<int>(_dischargeCurrent_old))>3 || first_run){
-            client->publish(base_topic+"dischargeCurrent",std::to_string(storageBoy->dischargeCurrent),1,true);
-            _dischargeCurrent_old = storageBoy->dischargeCurrent;
+        if(abs(static_cast<int>(storageBoy->_dischargeCurrent)-static_cast<int>(_dischargeCurrent_old))>3 || first_run){
+            client->publish(base_topic+"dischargeCurrent",std::to_string(storageBoy->_dischargeCurrent),1,true);
+            _dischargeCurrent_old = storageBoy->_dischargeCurrent;
         }
 
-        if(abs(static_cast<int>(storageBoy->chargeCurrent)-static_cast<int>(_chargeCurrent_old))>3 || first_run){
-            client->publish(base_topic+"chargeCurrent",std::to_string(storageBoy->chargeCurrent),1,true);
-            _chargeCurrent_old = storageBoy->chargeCurrent;
-        }
-
-        if(first_run){
-            client->publish(base_topic+"maxDischargeCurrent",std::to_string(storageBoy->maxDischargeCurrent),1,true);
+        if(abs(static_cast<int>(storageBoy->_chargeCurrent)-static_cast<int>(_chargeCurrent_old))>3 || first_run){
+            client->publish(base_topic+"chargeCurrent",std::to_string(storageBoy->_chargeCurrent),1,true);
+            _chargeCurrent_old = storageBoy->_chargeCurrent;
         }
 
         if(first_run){
-            client->publish(base_topic+"maxChargeCurrent",std::to_string(storageBoy->maxChargeCurrent),1,true);
+            client->publish(base_topic+"maxDischargeCurrent",std::to_string(storageBoy->_maxDischargeCurrent),1,true);
+        }
+
+        if(first_run){
+            client->publish(base_topic+"maxChargeCurrent",std::to_string(storageBoy->_maxChargeCurrent),1,true);
         }
         return;
     }
