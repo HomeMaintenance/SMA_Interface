@@ -37,7 +37,7 @@ namespace SMA {
          * - SMA::Device::mainsSupply
          */
         void mains_update();
-        void update() override;
+        void update(std::string message = "") override;
 
     protected:
         /// Previously read mains feed in value

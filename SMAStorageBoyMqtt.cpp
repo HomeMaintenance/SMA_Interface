@@ -51,7 +51,7 @@ namespace SMA {
         return;
     }
 
-    void StorageBoyMqtt::update()
+    void StorageBoyMqtt::update(std::string message)
     {
         if(_send_mqtt)
         {

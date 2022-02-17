@@ -12,7 +12,7 @@ namespace SMA{
     {
     }
 
-    void ModbusRelayInterface::update()
+    void ModbusRelayInterface::update(std::string message)
     {
     }
 }

@@ -47,7 +47,7 @@ void ModbusRelayStorageBoy::storageBoy_update()
     }
 }
 
-void ModbusRelayStorageBoy::update()
+void ModbusRelayStorageBoy::update(std::string message)
 {
     storageBoy_update();
     if(first_run)

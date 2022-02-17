@@ -29,7 +29,7 @@ namespace SMA{
         }
     }
 
-    void MainsMqtt::update()
+    void MainsMqtt::update(std::string message)
     {
         if(_send_mqtt){
             update_base_topic();

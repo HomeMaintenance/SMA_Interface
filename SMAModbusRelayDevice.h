@@ -21,7 +21,7 @@ namespace SMA{
             explicit ModbusRelayDevice(std::shared_ptr<Device> deviceIn, std::shared_ptr<mb::Device> deviceOut, unsigned int addressOffset = 0);
             ModbusRelayDevice(const ModbusRelayDevice& other) = delete;
             ~ModbusRelayDevice() = default;
-            virtual void update() override;
+            virtual void update(std::string message = "") override;
             /// Register where the Device::power value will be written to
             mb::Register<unsigned int>registerPower;
             /// Register where the Device::dcWatt value will be written to

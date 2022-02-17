@@ -27,7 +27,7 @@ namespace SMA{
             explicit ModbusRelayMains(std::weak_ptr<Device> deviceIn, std::shared_ptr<mb::Device> deviceOut, unsigned int addressOffset = 0);
             ModbusRelayMains(const ModbusRelayMains& other) = delete;
             ~ModbusRelayMains();
-            virtual void update() override;
+            virtual void update(std::string message = "") override;
             /// Register where the Device::mainsFeedIn value will be written to
             mb::Register<unsigned int>* registerMainsFeedIn = nullptr;
             /// Register where the Device::mainsSupply value will be written to

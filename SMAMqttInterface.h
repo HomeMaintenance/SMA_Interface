@@ -43,7 +43,7 @@ namespace SMA{
          * @param send_Status Status to be set to
          */
         virtual void sending(bool send_Status) final;
-        virtual void update() override;
+        virtual void update(std::string message = "") override;
 
     protected:
         /**

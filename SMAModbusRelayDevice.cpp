@@ -34,7 +34,7 @@ void ModbusRelayDevice::device_update()
     }
 }
 
-void ModbusRelayDevice::update()
+void ModbusRelayDevice::update(std::string message)
 {
     device_update();
     if(first_run)

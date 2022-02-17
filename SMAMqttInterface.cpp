@@ -14,7 +14,7 @@ namespace SMA{
         _send_mqtt = send_status;
     }
 
-    void MqttInterface::update()
+    void MqttInterface::update(std::string message)
     {
         return;
     }

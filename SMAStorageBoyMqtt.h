@@ -53,7 +53,7 @@ namespace SMA {
          *
          */
         void device_update();
-        void update() override;
+        void update(std::string message = "") override;
 
     private:
         /// Previously read power value

@@ -62,7 +62,7 @@ uint8_t ModbusRelayMains::mains_update()
     return result;
 }
 
-void ModbusRelayMains::update()
+void ModbusRelayMains::update(std::string message)
 {
     bool ret = mains_update();
     if(ret && first_run)

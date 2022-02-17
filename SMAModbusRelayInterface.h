@@ -22,7 +22,7 @@ namespace SMA{
         explicit ModbusRelayInterface();
         ModbusRelayInterface(const ModbusRelayInterface&) = delete;
         ~ModbusRelayInterface() = default;
-        virtual void update() override;
+        virtual void update(std::string message = "") override;
     protected:
         /// Flag for the first run
         bool first_run;
