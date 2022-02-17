@@ -49,6 +49,13 @@ add_library(
 target_link_libraries(SMAStorageBoy PUBLIC SMADevice PowerManagement)
 
 add_library(
+    SMASunnyBoy
+    SMASunnyBoy.h
+    SMASunnyBoy.cpp
+)
+target_link_libraries(SMASunnyBoy PUBLIC SMADevice PowerManagement)
+
+add_library(
     SMAMqttInterface
     SMAMqttInterface.h
     SMAMqttInterface.cpp
@@ -119,7 +126,7 @@ add_library(SMAModbusRelay INTERFACE)
 target_link_libraries(SMAModbusRelay INTERFACE SMAModbusRelayDevice SMAModbusRelayMains SMAModbusRelayStorageBoy)
 
 add_library(SMALIB INTERFACE)
-target_link_libraries(SMALIB INTERFACE SMAMqtt SMAModbusRelay)
+target_link_libraries(SMALIB INTERFACE SMADevice SMASunnyBoy SMAStorageBoy SMAMqtt SMAModbusRelay)
 
 if(PROJECT_IS_TOP_LEVEL)
     find_package(Doxygen

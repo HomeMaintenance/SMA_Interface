@@ -41,16 +41,23 @@ void storageBoy_test(){
 
 void device_test(){
     SMA::Device myDevice("192.168.178.128");
-    auto dcWatt = myDevice.get_dcWatt();
+    auto dcWatt = myDevice.dcWatt();
     std::cout << "dcWatt: " << dcWatt << std::endl;
-    auto mainsFeedIn = myDevice.get_mainsFeedIn();
+    auto mainsFeedIn = myDevice.mainsFeedIn();
     std::cout << "mainsFeedIn: " << mainsFeedIn << std::endl;
-    auto mainsSupply = myDevice.get_mainsSupply();
+    auto mainsSupply = myDevice.mainsSupply();
     std::cout << "mainsSupply: " << mainsSupply << std::endl;
-    auto power = myDevice.get_power();
+    auto power = myDevice.power();
     std::cout << "power: " << power << std::endl;
     std::cout << "-----------------" << std::endl;
     return;
+}
+
+void sunnyBoy_test(){
+    SMA::SunnyBoy sunnyboy("sunnyboy","192.168.178.128");
+    auto available_power = sunnyboy.get_available_power();
+    std::cout << "available_power: " << available_power << std::endl;
+    std::cout << "-----------------" << std::endl;
 }
 
 void mains_test(){
@@ -65,6 +72,7 @@ int main(int argc, char* argv[]){
     test.increment();
     storageBoy_test();
     device_test();
+    sunnyBoy_test();
     mains_test();
     return 0;
 }

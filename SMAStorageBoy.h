@@ -64,7 +64,7 @@ namespace SMA {
              * @param ret Return status (true: success, false: fail)
              * @return unsigned int: Battery Soc
              */
-            unsigned int get_soc(bool* ret = nullptr);
+            unsigned int get_soc(bool* ret = nullptr) const;
             /**
              * @brief Get the current discharge value
              *
@@ -74,7 +74,7 @@ namespace SMA {
              * @param ret Return status (true: success, false: fail)
              * @return unsigned int: Power drawn from the battery at this moment
              */
-            unsigned int get_dischargeCurrent(bool* ret = nullptr);
+            unsigned int get_dischargeCurrent(bool* ret = nullptr) const;
             /**
              * @brief Get the current charge value
              *
@@ -84,7 +84,7 @@ namespace SMA {
              * @param ret Return status (true: success, false: fail)
              * @return unsigned int: Power charged into the battery at this moment
              */
-            unsigned int get_chargeCurrent(bool* ret = nullptr);
+            unsigned int get_chargeCurrent(bool* ret = nullptr) const;
             /**
              * @brief Get the maxDischargeCurrent value
              *
@@ -93,14 +93,18 @@ namespace SMA {
              * @param ret Return status (true: success, false: fail)
              * @return unsigned int: Maximum power output of the battery
              */
-            unsigned int get_maxDischargeCurrent(bool* ret = nullptr);
+            unsigned int get_maxDischargeCurrent(bool* ret = nullptr) const;
             /**
              * @brief Get the maxChargeCurrent value
              *
              * @param ret Return status (true: success, false: fail)
              * @return unsigned int: Maximum power that can be charged into the battery
              */
-            unsigned int get_maxChargeCurrent(bool* ret = nullptr);
+            unsigned int get_maxChargeCurrent(bool* ret = nullptr) const;
+
+            long long get_charged_energy(bool* ret = nullptr) const;
+            long long get_missing_charge(bool* ret = nullptr) const;
+
 
             /**
              * @brief Test read the StorageBoy
@@ -120,5 +124,8 @@ namespace SMA {
             mb::Register<unsigned int> mbReg_maxDischargeCurrent;
             /// Register of the maximum charge power value
             mb::Register<unsigned int> mbReg_maxChargeCurrent;
+
+            mb::Register<long long> mbReg_charged_energy;
+            mb::Register<long long> mbReg_missing_charge;
     };
 }

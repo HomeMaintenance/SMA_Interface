@@ -21,16 +21,16 @@ void ModbusRelayDevice::set_dcWatt_register_address(int address)
 void ModbusRelayDevice::device_update()
 {
     bool ret = false;
-    if(abs(static_cast<int>(deviceIn->power)-static_cast<int>(_power_old))>3 || first_run)
+    if(abs(static_cast<int>(deviceIn->power())-static_cast<int>(_power_old))>3 || first_run)
     {
-        registerPower.setValue(deviceIn->power,&ret);
-        _power_old = deviceIn->power;
+        registerPower.setValue(deviceIn->power(),&ret);
+        _power_old = deviceIn->power();
     }
 
-    if(abs(static_cast<int>(deviceIn->dcWatt)-static_cast<int>(_dcWatt_old))>3 || first_run)
+    if(abs(static_cast<int>(deviceIn->dcWatt())-static_cast<int>(_dcWatt_old))>3 || first_run)
     {
-        registerDcWatt.setValue(deviceIn->dcWatt,&ret);
-        _dcWatt_old = deviceIn->dcWatt;
+        registerDcWatt.setValue(deviceIn->dcWatt(),&ret);
+        _dcWatt_old = deviceIn->dcWatt();
     }
 }
 

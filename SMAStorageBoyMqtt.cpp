@@ -13,14 +13,14 @@ namespace SMA {
 
     void StorageBoyMqtt::device_update()
     {
-        if(abs(static_cast<int>(storageBoy->power)-static_cast<int>(_power_old))>3 || first_run){
-            client->publish(base_topic+"power",std::to_string(storageBoy->power),1,true);
-            _power_old = storageBoy->power;
+        if(abs(static_cast<int>(storageBoy->power())-static_cast<int>(_power_old))>3 || first_run){
+            client->publish(base_topic+"power",std::to_string(storageBoy->power()),1,true);
+            _power_old = storageBoy->power();
         }
 
-        if(abs(static_cast<int>(storageBoy->dcWatt)-static_cast<int>(_dcWatt_old))>3 || first_run){
-            client->publish(base_topic+"dcWatt",std::to_string(storageBoy->dcWatt),1,true);
-            _dcWatt_old = storageBoy->dcWatt;
+        if(abs(static_cast<int>(storageBoy->dcWatt())-static_cast<int>(_dcWatt_old))>3 || first_run){
+            client->publish(base_topic+"dcWatt",std::to_string(storageBoy->dcWatt()),1,true);
+            _dcWatt_old = storageBoy->dcWatt();
         }
     }
 

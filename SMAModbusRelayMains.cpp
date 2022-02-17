@@ -38,7 +38,7 @@ uint8_t ModbusRelayMains::mains_update()
 
     bool ret1 = false;
     bool ret1_1 = false;
-    auto mains_feedIn = read_device->get_mainsFeedIn(false, &ret1);
+    auto mains_feedIn = read_device->mainsFeedIn(false, &ret1);
     if(abs(static_cast<int>(mains_feedIn)-static_cast<int>(_mainsFeedIn_old))>3 || first_run)
     {
         if(registerMainsFeedIn)
@@ -48,7 +48,7 @@ uint8_t ModbusRelayMains::mains_update()
 
     bool ret2 = false;
     bool ret2_1 = false;
-    auto mains_supply = read_device->get_mainsSupply(false, &ret2);
+    auto mains_supply = read_device->mainsSupply(false, &ret2);
     if(abs(static_cast<int>(mains_supply)-static_cast<int>(_mainsSupply_old))>3 || first_run)
     {
         if(registerMainsSupply)

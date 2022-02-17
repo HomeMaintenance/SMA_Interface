@@ -15,7 +15,7 @@
     mbReg_mainsSupply(this, 30865, 1, " W")
 
 #define GENERATE_MB_GET_FUNC(type, mbRegister) \
-    type Device::get_##mbRegister(bool force, bool* ret){ \
+    type Device::##mbRegister(bool force, bool* ret) const { \
         type retval = 0; \
         if(online){ \
             retval = mbReg_##mbRegister.getValue(force, ret); \
@@ -32,15 +32,7 @@
 
 
 namespace SMA{
-    Device::Device(const char* ipAddress, int port):
-        mb::Device(ipAddress, port),
-        INIT_DEVICE_REGISTERS
-    {
-        deviceInit();
-        return;
-    }
-
-    Device::Device(std::string ipAddress, int port) :
+    Device::Device(std::string ipAddress, int port):
         mb::Device(ipAddress, port),
         INIT_DEVICE_REGISTERS
     {
@@ -83,7 +75,7 @@ namespace SMA{
         }
     }
 
-    unsigned int Device::get_power(bool force, bool* ret)
+    unsigned int Device::power(bool force, bool* ret) const
     {
         int temp = 0;
         if(online){
@@ -95,7 +87,7 @@ namespace SMA{
         return temp;
     }
 
-    unsigned int Device::get_dcWatt(bool force, bool* ret)
+    unsigned int Device::dcWatt(bool force, bool* ret) const
     {
         int temp = 0;
         if(online){
@@ -137,23 +129,13 @@ namespace SMA{
         return;
     }
 
-    bool Device::device_read_all_registers()
-    {
-        bool result = true;
-        power = get_power(false,&result);
-        dcWatt = get_dcWatt(false,&result);
-        mainsFeedIn = get_mainsFeedIn(false,&result);
-        mainsSupply = get_mainsSupply(false,&result);
-        return result;
-    }
-
     void Device::testRead(bool* ret /* = nullptr */)
     {
         std::cout << "online start: " << online << std::endl;
-        std::cout << "power: " << get_power(ret) << std::endl;
-        std::cout << "dcWatt: " << get_dcWatt(ret) << std::endl;
-        std::cout << "mainsFeedIn: " << get_mainsFeedIn(ret) << std::endl;
-        std::cout << "mainsSupply: " << get_mainsSupply(ret) << std::endl;
+        std::cout << "power: " << power(false,ret) << std::endl;
+        std::cout << "dcWatt: " << dcWatt(false,ret) << std::endl;
+        std::cout << "mainsFeedIn: " << mainsFeedIn(false,ret) << std::endl;
+        std::cout << "mainsSupply: " << mainsSupply(false,ret) << std::endl;
         std::cout << "online end: " << online << std::endl;
     }
 }

@@ -6,10 +6,12 @@
     mbReg_chargeCurrent(this,31393,1," W"), \
     mbReg_dischargeCurrent(this,31395,1," W"), \
     mbReg_maxChargeCurrent(this,40189,1," W"), \
-    mbReg_maxDischargeCurrent(this,40191,1," W")
+    mbReg_maxDischargeCurrent(this,40191,1," W"), \
+    mbReg_charged_energy(this,31397,1," Wh"), \
+    mbReg_missing_charge(this,31401,1," Wh")
 
 #define GENERATE_MB_GET_FUNC(type, mbRegister) \
-    type StorageBoy::get_##mbRegister(bool* ret){ \
+    type StorageBoy::get_##mbRegister(bool* ret) const { \
         type retval = 0; \
         if(online){ \
             retval = mbReg_##mbRegister.getValue(false, ret); \
@@ -54,27 +56,27 @@ namespace SMA {
     }
 
     float StorageBoy::present_charge(){
-        return static_cast<float>(get_dischargeCurrent());
-    }
-
-    float StorageBoy::charged_energy(){
         return static_cast<float>(get_chargeCurrent());
     }
 
+    float StorageBoy::charged_energy(){
+        return static_cast<float>(get_charged_energy());
+    }
+
     float StorageBoy::max_capacity(){
-        return static_cast<float>(get_dischargeCurrent());
+        return charged_energy() * 100.f / soc();
     }
 
     float StorageBoy::missing_charge(){
-        return static_cast<float>(get_dischargeCurrent());
+        return static_cast<float>(get_missing_charge());
     }
 
     float StorageBoy::max_charge_rate() const{
-        return static_cast<float>(_maxChargeCurrent);
+        return static_cast<float>(get_maxChargeCurrent());
     }
 
     float StorageBoy::max_discharge_rate() const{
-        return static_cast<float>(_maxDischargeCurrent);
+        return static_cast<float>(get_maxDischargeCurrent());
     }
 
 
@@ -83,19 +85,21 @@ namespace SMA {
     GENERATE_MB_GET_FUNC(unsigned int, chargeCurrent);
     GENERATE_MB_GET_FUNC(unsigned int, maxDischargeCurrent);
     GENERATE_MB_GET_FUNC(unsigned int, maxChargeCurrent);
+    GENERATE_MB_GET_FUNC(long long, charged_energy);
+    GENERATE_MB_GET_FUNC(long long, missing_charge);
 
     void StorageBoy::testRead(bool* ret /* = nullptr */)
     {
         std::cout << "online start: " << online << std::endl;
-        std::cout << "power: " << get_power(ret) << std::endl;
-        std::cout << "dcWatt: " << get_dcWatt(ret) << std::endl;
-        std::cout << "mainsFeedIn: " << get_mainsFeedIn(ret) << std::endl;
-        std::cout << "mainsSupply: " << get_mainsSupply(ret) << std::endl;
-        std::cout << "soc: " << get_soc(ret) << std::endl;
-        std::cout << "dischargeCurrent: " << get_dischargeCurrent(ret) << std::endl;
-        std::cout << "chargeCurrent: " << get_chargeCurrent(ret) << std::endl;
-        std::cout << "maxDischargeCurrent: "<< get_maxDischargeCurrent(ret) << std::endl;
-        std::cout << "maxChargeCurrent: " << get_maxChargeCurrent(ret) << std::endl;
+        std::cout << "power: " << power(ret) << std::endl;
+        std::cout << "dcWatt: " << dcWatt(ret) << std::endl;
+        std::cout << "mainsFeedIn: " << mainsFeedIn(ret) << std::endl;
+        std::cout << "mainsSupply: " << mainsSupply(ret) << std::endl;
+        std::cout << "soc: " << soc() << std::endl;
+        std::cout << "dischargeCurrent: " << present_discharge() << std::endl;
+        std::cout << "chargeCurrent: " << present_charge() << std::endl;
+        std::cout << "maxDischargeCurrent: "<< max_discharge_rate() << std::endl;
+        std::cout << "maxChargeCurrent: " << max_charge_rate() << std::endl;
         std::cout << "online end: " << online << std::endl;
     }
 }

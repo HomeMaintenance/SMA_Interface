@@ -18,13 +18,6 @@ namespace SMA
          * @param ipAddress Ip address of the device
          * @param port Port number of the device
          */
-        explicit Device(const char *ipAddress, int port = 502);
-        /**
-         * @brief Construct a new Device object
-         *
-         * @param ipAddress Ip address of the device
-         * @param port Port number of the device
-         */
         explicit Device(std::string ipAddress, int port = 502);
         Device(const Device &other) = delete;
         ~Device() = default;
@@ -39,29 +32,20 @@ namespace SMA
          */
         void test();
 
-        /// Last read power value from the device.
-        unsigned int power{0};
-        /// Last read dcWatt value from the device.
-        unsigned int dcWatt{0};
-        /// Last read mainsFeedIn value from the device.
-        unsigned int mainsFeedIn{0};
-        /// Last read mainsSupply value from the device.
-        unsigned int mainsSupply{0};
-
         /**
          * @brief Read power register
          *
          * @param ret Return status (true: success, false: fail)
          * @return unsigned int: Power value
          */
-        unsigned int get_power(bool force = false, bool *ret = nullptr);
+        unsigned int power(bool force = false, bool *ret = nullptr) const;
         /**
          * @brief Read dcWatt register
          *
          * @param ret Return status (true: success, false: fail)
          * @return unsigned int: DcWatt value
          */
-        unsigned int get_dcWatt(bool force = false, bool *ret = nullptr);
+        unsigned int dcWatt(bool force = false, bool *ret = nullptr) const;
         /**
          * @brief Get the feedIn to mains register
          *
@@ -70,7 +54,7 @@ namespace SMA
          * @param ret Return status (true: success, false: fail)
          * @return unsigned int: FeedIn to mains
          */
-        unsigned int get_mainsFeedIn(bool force = false, bool *ret = nullptr);
+        unsigned int mainsFeedIn(bool force = false, bool *ret = nullptr) const;
         /**
          * @brief Get the supply from mains register
          *
@@ -79,7 +63,7 @@ namespace SMA
          * @param ret Return status (true: success, false: fail)
          * @return unsigned int: Supply from mains
          */
-        unsigned int get_mainsSupply(bool force = false, bool *ret = nullptr);
+        unsigned int mainsSupply(bool force = false, bool *ret = nullptr) const;
 
         /**
          * @brief Test read the device
@@ -87,16 +71,6 @@ namespace SMA
          * @param ret Return status (true: success, false: fail)
          */
         void testRead(bool *ret = nullptr);
-
-        /**
-         * @brief Read all device registers and store the values inside the coresponding variables
-         *
-         * Called by #read_all_registers.
-         *
-         * @return true: Read successful
-         * @return false: Read failed
-         */
-        virtual bool device_read_all_registers() final;
 
     private:
         /**
