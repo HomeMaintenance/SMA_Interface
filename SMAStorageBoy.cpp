@@ -39,23 +39,6 @@ namespace SMA {
         storageBoyInit();
     }
 
-    bool StorageBoy::storageBoy_read_all_registers()
-    {
-        bool result = true;
-        _soc = get_soc(&result);
-        _dischargeCurrent = get_dischargeCurrent(&result);
-        _chargeCurrent = get_chargeCurrent(&result);
-        return result;
-    }
-
-    bool StorageBoy::read_all_registers()
-    {
-        bool result = true;
-        result = result && device_read_all_registers();
-        result = result && storageBoy_read_all_registers();
-        return result;
-    };
-
     void StorageBoy::storageBoyInit()
     {
         _maxDischargeCurrent = get_maxDischargeCurrent();

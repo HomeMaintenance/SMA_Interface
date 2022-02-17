@@ -57,24 +57,6 @@ namespace SMA {
 
         public:
             /**
-             * @brief Read all storageBoy registers
-             *
-             * Called by #read_all_registers.
-             *
-             * @return true: Read successful
-             * @return false: Read failed
-             */
-            virtual bool storageBoy_read_all_registers() final;
-            /**
-             * @brief Read all registers
-             *
-             * Calls #storageBoy_read_all_registers.
-             *
-             * @return true: Read successful
-             * @return false: Read failed
-             */
-            virtual bool read_all_registers() override;
-            /**
              * @brief Get the battery soc value
              *
              * Battery state of charge

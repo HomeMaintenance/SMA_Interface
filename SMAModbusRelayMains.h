@@ -24,14 +24,14 @@ namespace SMA{
              * @param deviceOut Device the values are written to
              * @param addressOffset Register offset of the registers the values are written to
              */
-            explicit ModbusRelayMains(std::shared_ptr<Device> deviceIn, std::shared_ptr<mb::Device> deviceOut, unsigned int addressOffset = 0);
+            explicit ModbusRelayMains(std::weak_ptr<Device> deviceIn, std::shared_ptr<mb::Device> deviceOut, unsigned int addressOffset = 0);
             ModbusRelayMains(const ModbusRelayMains& other) = delete;
-            ~ModbusRelayMains() = default;
+            ~ModbusRelayMains();
             virtual void update() override;
             /// Register where the Device::mainsFeedIn value will be written to
-            mb::Register<unsigned int> registerMainsFeedIn;
+            mb::Register<unsigned int>* registerMainsFeedIn = nullptr;
             /// Register where the Device::mainsSupply value will be written to
-            mb::Register<unsigned int> registerMainsSupply;
+            mb::Register<unsigned int>* registerMainsSupply = nullptr;
             /**
              * @brief Set the MainsFeedIn register address
              *
@@ -45,7 +45,7 @@ namespace SMA{
              */
             void set_MainsSuppy_register_address(int address);
             /// Device where the values are read from
-            std::shared_ptr<Device> deviceIn;
+            std::weak_ptr<Device> deviceIn;
             /**
              * @brief Relay the mains values
              *
@@ -56,7 +56,7 @@ namespace SMA{
              * - Device::mainsSupply
              *
              */
-            void mains_update();
+            uint8_t mains_update();
 
         private:
             /// Previously read Device::mainsFeedIn value

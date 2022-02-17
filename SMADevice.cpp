@@ -32,32 +32,30 @@
 
 
 namespace SMA{
-    Device::Device(const char* ipAddress, int port, bool _thread_start):
+    Device::Device(const char* ipAddress, int port):
         mb::Device(ipAddress, port),
         INIT_DEVICE_REGISTERS
     {
-        deviceInit(_thread_start);
+        deviceInit();
         return;
     }
 
-    Device::Device(std::string ipAddress, int port, bool _thread_start) :
+    Device::Device(std::string ipAddress, int port) :
         mb::Device(ipAddress, port),
         INIT_DEVICE_REGISTERS
     {
-        deviceInit(_thread_start);
+        deviceInit();
         return;
     }
 
-    void Device::deviceInit(bool _thread_start)
+    void Device::deviceInit()
     {
         try{
             parseDeviceInfo();
             online = true;
             bool test{false};
-            serialNumber_ = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_serialNumber.readRawData(false, &test).data(), 0));
-            model_ = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_model.readRawData(false, &test).data(), 0));
-            if(_thread_start)
-                start_thread();
+            serialNumber_ = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_serialNumber.readRawData(true, &test).data(), 0));
+            model_ = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_model.readRawData(true, &test).data(), 0));
         }
         catch (std::exception& e){
             std::cerr << e.what() << std::endl;
@@ -73,7 +71,7 @@ namespace SMA{
             throw connection_exception;
         }
         bool valid{false};
-        std::vector<uint16_t> return_value = mbReg_deviceInfo.readRawData(false, &valid);
+        std::vector<uint16_t> return_value = mbReg_deviceInfo.readRawData(true, &valid);
         if(!valid){
             throw connection_exception;
         }
@@ -117,12 +115,10 @@ namespace SMA{
             mb::Register<int> reboot(this,40077);
             reboot.setValue(1146);
             online = false;
-            stop_thread();
             disconnect();
             while(!online){
                 connect(ipAddress.c_str(), port);
             }
-            start_thread();
         }
         return;
     }
@@ -148,13 +144,6 @@ namespace SMA{
         dcWatt = get_dcWatt(false,&result);
         mainsFeedIn = get_mainsFeedIn(false,&result);
         mainsSupply = get_mainsSupply(false,&result);
-        return result;
-    }
-
-    bool Device::read_all_registers()
-    {
-        bool result = true;
-        result = result && device_read_all_registers();
         return result;
     }
 

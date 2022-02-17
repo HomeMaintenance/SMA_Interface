@@ -17,17 +17,15 @@ namespace SMA
          *
          * @param ipAddress Ip address of the device
          * @param port Port number of the device
-         * @param thread_start Start flag for cyclic operation
          */
-        explicit Device(const char *ipAddress, int port = 502, bool thread_start = false);
+        explicit Device(const char *ipAddress, int port = 502);
         /**
          * @brief Construct a new Device object
          *
          * @param ipAddress Ip address of the device
          * @param port Port number of the device
-         * @param thread_start Start flag for cyclic operation
          */
-        explicit Device(std::string ipAddress, int port = 502, bool thread_start = false);
+        explicit Device(std::string ipAddress, int port = 502);
         Device(const Device &other) = delete;
         ~Device() = default;
         /**
@@ -100,25 +98,14 @@ namespace SMA
          */
         virtual bool device_read_all_registers() final;
 
-        /**
-         * @brief Read all registers
-         *
-         * Calls #device_read_all_registers.
-         *
-         * @return true: Read successful
-         * @return false: Read failed
-         */
-        virtual bool read_all_registers() override;
-
     private:
         /**
          * @brief Initialize the device
          *
-         * @param thread_start Start flag for cyclic operation
          * Read constant device variables, such as slaveId_, physicalSusyId_, physicalSerialNumber_, model_
          *
          */
-        void deviceInit(bool thread_start = false);
+        void deviceInit();
         /**
          * @brief Parse device information from uint16_t[4] array
          *
