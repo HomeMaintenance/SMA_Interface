@@ -7,15 +7,15 @@
 #define INIT_DEVICE_REGISTERS \
     mbReg_deviceInfo(this, 42109), \
     mbReg_serialNumber(this, 30057), \
-    mbReg_rebootRegister(this, 40077), \
     mbReg_model(this, 30057), \
+    mbReg_rebootRegister(this, 40077), \
     mbReg_power(this, 30775, 1, " W"), \
     mbReg_dcWatt(this, 30773, 1, " W"), \
     mbReg_mainsFeedIn(this, 30867, 1, " W"), \
     mbReg_mainsSupply(this, 30865, 1, " W")
 
 #define GENERATE_MB_GET_FUNC(type, mbRegister) \
-    type Device::##mbRegister(bool force, bool* ret) const { \
+    type Device::mbRegister(bool force, bool* ret) const { \
         type retval = 0; \
         if(online){ \
             retval = mbReg_##mbRegister.getValue(force, ret); \

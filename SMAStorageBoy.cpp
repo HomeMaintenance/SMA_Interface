@@ -3,10 +3,10 @@
 
 #define INIT_STORAGEBOY_REGISTERS \
     mbReg_soc(this,30845,1," %"), \
-    mbReg_chargeCurrent(this,31393,1," W"), \
     mbReg_dischargeCurrent(this,31395,1," W"), \
-    mbReg_maxChargeCurrent(this,40189,1," W"), \
+    mbReg_chargeCurrent(this,31393,1," W"), \
     mbReg_maxDischargeCurrent(this,40191,1," W"), \
+    mbReg_maxChargeCurrent(this,40189,1," W"), \
     mbReg_charged_energy(this,31397,1," Wh"), \
     mbReg_missing_charge(this,31401,1," Wh")
 
@@ -28,14 +28,16 @@
 
 namespace SMA {
     StorageBoy::StorageBoy(const char* ipAddress, int port):
-        Device(ipAddress,port), BatteryInverter(),
+        Device(ipAddress,port),
+        BatteryInverter(),
         INIT_STORAGEBOY_REGISTERS
     {
         storageBoyInit();
     }
 
     StorageBoy::StorageBoy(std::string ipAddress, int port):
-        Device(ipAddress, port), BatteryInverter(),
+        Device(ipAddress, port),
+        BatteryInverter(),
         INIT_STORAGEBOY_REGISTERS
     {
         storageBoyInit();
