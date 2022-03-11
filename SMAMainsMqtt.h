@@ -21,7 +21,7 @@ namespace SMA {
          */
         explicit MainsMqtt(std::string name, std::shared_ptr<Device> device, std::shared_ptr<myMqtt::Client>  client);
         MainsMqtt(const MainsMqtt& other) = delete;
-        ~MainsMqtt() = default;
+        virtual ~MainsMqtt() = default;
         /**
          * @brief Device object used to read values
          *

@@ -26,7 +26,7 @@ namespace SMA{
              */
             explicit ModbusRelayStorageBoy(std::shared_ptr<StorageBoy> deviceIn, std::shared_ptr<mb::Device> deviceOut, unsigned int addressOffset = 0);
             ModbusRelayStorageBoy(const ModbusRelayStorageBoy& other) = delete;
-            ~ModbusRelayStorageBoy() = default;
+            virtual ~ModbusRelayStorageBoy() = default;
             virtual void update(std::string message = "") override;
             /// Register where the StorageBoy::soc value will be written to
             mb::Register<unsigned int>registerSoc;

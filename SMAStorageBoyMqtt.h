@@ -20,7 +20,7 @@ namespace SMA {
          */
         explicit StorageBoyMqtt(std::string name, std::shared_ptr<StorageBoy> storageBoy, std::shared_ptr<myMqtt::Client> client);
         StorageBoyMqtt(const StorageBoyMqtt& other) = delete;
-        ~StorageBoyMqtt() = default;
+        virtual ~StorageBoyMqtt() = default;
         /**
          * @brief storageBoy object
          *

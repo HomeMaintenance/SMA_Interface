@@ -25,7 +25,7 @@ namespace SMA {
              */
             explicit StorageBoy(std::string ipAddress, int port = 502);
             StorageBoy(const StorageBoy& other) = delete;
-            ~StorageBoy() = default;
+            virtual ~StorageBoy() = default;
 
             /// Last read soc value from the device.
             unsigned int _soc{0};

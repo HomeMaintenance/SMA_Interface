@@ -19,7 +19,7 @@ namespace SMA{
          */
         explicit MqttInterface(std::string name, std::shared_ptr<myMqtt::Client> client);
         MqttInterface(const MqttInterface& other) = delete;
-        ~MqttInterface() = default;
+        virtual ~MqttInterface() = default;
         /**
          * @brief Mqtt Client object
          *

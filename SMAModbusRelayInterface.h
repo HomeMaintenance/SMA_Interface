@@ -21,7 +21,7 @@ namespace SMA{
         explicit ModbusRelayInterface(unsigned int addressOffset);
         explicit ModbusRelayInterface();
         ModbusRelayInterface(const ModbusRelayInterface&) = delete;
-        ~ModbusRelayInterface() = default;
+        virtual ~ModbusRelayInterface() = default;
         virtual void update(std::string message = "") override;
     protected:
         /// Flag for the first run

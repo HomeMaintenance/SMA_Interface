@@ -21,7 +21,7 @@ namespace SMA {
          */
         explicit DeviceMqtt(std::string name, std::shared_ptr<Device> device, std::shared_ptr<myMqtt::Client> client);
         DeviceMqtt(const DeviceMqtt& other) = delete;
-        ~DeviceMqtt() = default;
+        virtual ~DeviceMqtt() = default;
 
         /// Device object to be interfaced
         std::shared_ptr<Device> device;

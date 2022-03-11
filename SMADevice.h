@@ -20,7 +20,7 @@ namespace SMA
          */
         explicit Device(std::string ipAddress, int port = 502);
         Device(const Device &other) = delete;
-        ~Device() = default;
+        virtual ~Device() = default;
         /**
          * @brief Reboot the device
          *
