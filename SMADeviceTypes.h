@@ -15,7 +15,9 @@ namespace SMA{
         CommunicationProduct
     };
 
-    const std::map<int,std::string> deviceType{
+    std::string deviceClassToString(const DeviceClass& dc);
+
+    const std::map<unsigned int,std::string> deviceTypeMap{
         {9067, "Sunny Tripower STP 10000TL-10"},
         {9068, "Sunny Tripower STP 12000TL-10"},
         {9069, "Sunny Tripower STP 15000TL-10"},

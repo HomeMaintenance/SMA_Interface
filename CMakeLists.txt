@@ -36,6 +36,7 @@ add_subdirectory(test)
 add_library(
     SMADevice
     SMADeviceTypes.h
+    SMADeviceTypes.cpp
     SMADevice.h
     SMADevice.cpp
 )

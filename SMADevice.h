@@ -1,6 +1,7 @@
 #pragma once
 #include <ModbusDevice.h>
 #include <ModbusRegister.h>
+#include "SMADeviceTypes.h"
 
 namespace SMA
 {
@@ -95,6 +96,8 @@ namespace SMA
         unsigned int serialNumber_{0};
 
     private:
+        unsigned int device_type;
+        DeviceClass device_class;
         /**
          * @brief Modbus slave id of the device
          *
@@ -111,11 +114,6 @@ namespace SMA
          */
         unsigned int physicalSerialNumber_{0};
         /**
-         * @brief Model code of the device
-         *
-         */
-        unsigned int model_{0};
-        /**
          * @brief Register of the device info
          *
          */
@@ -125,11 +123,12 @@ namespace SMA
          *
          */
         mb::Register<unsigned int> mbReg_serialNumber;
+        mb::Register<unsigned int> mbReg_device_class;
         /**
          * @brief Register of the model code
          *
          */
-        mb::Register<unsigned int> mbReg_model;
+        mb::Register<unsigned int> mbReg_device_type;
         /**
          * @brief Register to reboot the device
          *

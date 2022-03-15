@@ -7,7 +7,8 @@
 #define INIT_DEVICE_REGISTERS \
     mbReg_deviceInfo(this, 42109), \
     mbReg_serialNumber(this, 30057), \
-    mbReg_model(this, 30057), \
+    mbReg_device_class(this, 30051), \
+    mbReg_device_type(this, 30053), \
     mbReg_rebootRegister(this, 40077), \
     mbReg_power(this, 30775, 1, " W"), \
     mbReg_dcWatt(this, 30773, 1, " W"), \
@@ -47,11 +48,14 @@ namespace SMA{
             online = true;
             bool test{false};
             serialNumber_ = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_serialNumber.readRawData(true, &test).data(), 0));
-            model_ = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_model.readRawData(true, &test).data(), 0));
+            device_type = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_device_type.readRawData(true, &test).data(), 0));
+            device_class = static_cast<DeviceClass>(MODBUS_GET_INT32_FROM_INT16(mbReg_device_class.readRawData(true, &test).data(), 0));
+            std::cout << ipAddress << " is device of class " << device_class << " (" <<  deviceClassToString(device_class) << ")" << std::endl;
         }
         catch (std::exception& e){
             std::cerr << e.what() << std::endl;
             online = false;
+            disconnect();
         }
         return;
     }
@@ -109,6 +113,7 @@ namespace SMA{
             online = false;
             disconnect();
             while(!online){
+                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
                 connect(ipAddress.c_str(), port);
             }
         }
@@ -120,8 +125,8 @@ namespace SMA{
         bool ret_val = false;
         std::cout << "Test output" << std::endl;
         if(online){
-            model_ = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_model.readRawData(false, &ret_val).data(),0));
-            std::cout << "Model: " << model_ << ", valid: "<< ret_val << std::endl;
+            device_type = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_device_type.readRawData(false, &ret_val).data(),0));
+            std::cout << "Model: " << device_type << " ("<< deviceTypeMap.at(device_type) << "), valid: "<< ret_val << std::endl;
         }
         else{
             std::cout << "not online";
