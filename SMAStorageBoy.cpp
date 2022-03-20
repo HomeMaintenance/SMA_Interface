@@ -13,7 +13,7 @@
 #define GENERATE_MB_GET_FUNC(type, mbRegister) \
     type StorageBoy::get_##mbRegister(bool* ret) const { \
         type retval = 0; \
-        if(online){ \
+        if(online()){ \
             retval = mbReg_##mbRegister.getValue(false, ret); \
         } \
         return (retval); \
@@ -92,7 +92,7 @@ namespace SMA {
 
     void StorageBoy::testRead(bool* ret /* = nullptr */)
     {
-        std::cout << "online start: " << online << std::endl;
+        std::cout << "online start: " << online() << std::endl;
         std::cout << "power: " << power(ret) << std::endl;
         std::cout << "dcWatt: " << dcWatt(ret) << std::endl;
         std::cout << "mainsFeedIn: " << mainsFeedIn(ret) << std::endl;
@@ -102,6 +102,6 @@ namespace SMA {
         std::cout << "chargeCurrent: " << present_charge() << std::endl;
         std::cout << "maxDischargeCurrent: "<< max_discharge_rate() << std::endl;
         std::cout << "maxChargeCurrent: " << max_charge_rate() << std::endl;
-        std::cout << "online end: " << online << std::endl;
+        std::cout << "online end: " << online() << std::endl;
     }
 }

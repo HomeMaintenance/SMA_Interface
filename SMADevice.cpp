@@ -18,7 +18,7 @@
 #define GENERATE_MB_GET_FUNC(type, mbRegister) \
     type Device::mbRegister(bool force, bool* ret) const { \
         type retval = 0; \
-        if(online){ \
+        if(online()){ \
             retval = mbReg_##mbRegister.getValue(force, ret); \
         } \
         return (retval); \
@@ -45,16 +45,16 @@ namespace SMA{
     {
         try{
             parseDeviceInfo();
-            online = true;
             bool test{false};
             serialNumber_ = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_serialNumber.readRawData(true, &test).data(), 0));
             device_type = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_device_type.readRawData(true, &test).data(), 0));
             device_class = static_cast<DeviceClass>(MODBUS_GET_INT32_FROM_INT16(mbReg_device_class.readRawData(true, &test).data(), 0));
             std::cout << ipAddress << " is device of class " << device_class << " (" <<  deviceClassToString(device_class) << ")" << std::endl;
+            setOnline(test);
         }
         catch (std::exception& e){
             std::cerr << e.what() << std::endl;
-            online = false;
+            setOnline(false);
             disconnect();
         }
         return;
@@ -82,7 +82,7 @@ namespace SMA{
     unsigned int Device::power(bool force, bool* ret) const
     {
         int temp = 0;
-        if(online){
+        if(online()){
             temp = mbReg_power.getValue(force, ret);
         }
         if(temp < 0){
@@ -94,7 +94,7 @@ namespace SMA{
     unsigned int Device::dcWatt(bool force, bool* ret) const
     {
         int temp = 0;
-        if(online){
+        if(online()){
             temp = mbReg_dcWatt.getValue(force, ret);
         }
         if(temp < 0)
@@ -107,12 +107,12 @@ namespace SMA{
     GENERATE_MB_GET_FUNC(unsigned int, mainsSupply);
 
     void Device::reboot(){
-        if(online){
+        if(online()){
             mb::Register<int> reboot(this,40077);
             reboot.setValue(1146);
-            online = false;
+            setOnline(false);
             disconnect();
-            while(!online){
+            while(!online()){
                 std::this_thread::sleep_for(std::chrono::milliseconds(1000));
                 connect(ipAddress.c_str(), port);
             }
@@ -124,7 +124,7 @@ namespace SMA{
     {
         bool ret_val = false;
         std::cout << "Test output" << std::endl;
-        if(online){
+        if(online()){
             device_type = static_cast<unsigned int>(MODBUS_GET_INT32_FROM_INT16(mbReg_device_type.readRawData(false, &ret_val).data(),0));
             std::cout << "Model: " << device_type << " ("<< deviceTypeMap.at(device_type) << "), valid: "<< ret_val << std::endl;
         }
@@ -136,11 +136,11 @@ namespace SMA{
 
     void Device::testRead(bool* ret /* = nullptr */)
     {
-        std::cout << "online start: " << online << std::endl;
+        std::cout << "online start: " << online() << std::endl;
         std::cout << "power: " << power(false,ret) << std::endl;
         std::cout << "dcWatt: " << dcWatt(false,ret) << std::endl;
         std::cout << "mainsFeedIn: " << mainsFeedIn(false,ret) << std::endl;
         std::cout << "mainsSupply: " << mainsSupply(false,ret) << std::endl;
-        std::cout << "online end: " << online << std::endl;
+        std::cout << "online end: " << online() << std::endl;
     }
 }
