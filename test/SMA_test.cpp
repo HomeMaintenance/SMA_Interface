@@ -18,7 +18,7 @@ private:
 };
 
 void storageBoy_test(){
-    SMA::StorageBoy myStorageBoy("192.168.178.113");
+    SMA::StorageBoy myStorageBoy("myStorageBoy", "192.168.178.113");
     auto soc = myStorageBoy.soc();
     std::cout << "soc: " << soc << std::endl;
     auto present_discharge = myStorageBoy.present_discharge();

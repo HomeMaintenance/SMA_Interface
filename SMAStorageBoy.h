@@ -16,14 +16,7 @@ namespace SMA {
              * @param ipAddress Ip address of the device
              * @param port Port number of the device
              */
-            explicit StorageBoy(const char* ipAddress, int port = 502);
-            /**
-             * @brief Construct a new Storage Boy object
-             *
-             * @param ipAddress Ip address of the device
-             * @param port Port number of the device
-             */
-            explicit StorageBoy(std::string ipAddress, int port = 502);
+            explicit StorageBoy(std::string name, std::string ipAddress, int port = 502);
             StorageBoy(const StorageBoy& other) = delete;
             virtual ~StorageBoy() = default;
 
@@ -47,6 +40,7 @@ namespace SMA {
             virtual float missing_charge() override;
             virtual float max_charge_rate() const override;
             virtual float max_discharge_rate() const override;
+            virtual bool online() const final;
 
         private:
             /**

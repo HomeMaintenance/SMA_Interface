@@ -13,31 +13,20 @@
 #define GENERATE_MB_GET_FUNC(type, mbRegister) \
     type StorageBoy::get_##mbRegister(bool* ret) const { \
         type retval = 0; \
-        if(online()){ \
-            retval = mbReg_##mbRegister.getValue(false, ret); \
-        } \
+        retval = mbReg_##mbRegister.getValue(false, ret); \
         return (retval); \
     }
 
 #define GENERATE_MB_SET_FUNC(type, mbRegister) \
     void StorageBoy::set_##mbRegister(type input, bool* ret){ \
-        if(online){ \
-            mbReg_##mbRegister.setValue(input, ret); \
-        } \
+        mbReg_##mbRegister.setValue(input, ret); \
     }
 
 namespace SMA {
-    StorageBoy::StorageBoy(const char* ipAddress, int port):
-        Device(ipAddress,port),
-        BatteryInverter(),
-        INIT_STORAGEBOY_REGISTERS
-    {
-        storageBoyInit();
-    }
 
-    StorageBoy::StorageBoy(std::string ipAddress, int port):
+    StorageBoy::StorageBoy(std::string name, std::string ipAddress, int port):
         Device(ipAddress, port),
-        BatteryInverter(),
+        BatteryInverter(name),
         INIT_STORAGEBOY_REGISTERS
     {
         storageBoyInit();
@@ -81,6 +70,9 @@ namespace SMA {
         return static_cast<float>(get_maxDischargeCurrent());
     }
 
+    bool StorageBoy::online() const {
+        return mb::Device::online();
+    }
 
     GENERATE_MB_GET_FUNC(unsigned int, soc);
     GENERATE_MB_GET_FUNC(unsigned int, dischargeCurrent);
@@ -92,7 +84,7 @@ namespace SMA {
 
     void StorageBoy::testRead(bool* ret /* = nullptr */)
     {
-        std::cout << "online start: " << online() << std::endl;
+        std::cout << "online start: " << mb::Device::online() << std::endl;
         std::cout << "power: " << power(ret) << std::endl;
         std::cout << "dcWatt: " << dcWatt(ret) << std::endl;
         std::cout << "mainsFeedIn: " << mainsFeedIn(ret) << std::endl;
@@ -102,6 +94,6 @@ namespace SMA {
         std::cout << "chargeCurrent: " << present_charge() << std::endl;
         std::cout << "maxDischargeCurrent: "<< max_discharge_rate() << std::endl;
         std::cout << "maxChargeCurrent: " << max_charge_rate() << std::endl;
-        std::cout << "online end: " << online() << std::endl;
+        std::cout << "online end: " << mb::Device::online() << std::endl;
     }
 }
