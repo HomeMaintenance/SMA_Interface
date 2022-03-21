@@ -16,4 +16,10 @@ float SunnyBoy::get_available_power() const{
 void SunnyBoy::set_available_power(float value){
 
 }
+
+Json::Value SunnyBoy::toJson() const{
+    Json::Value jsonData = PowerSource::toJson();
+    jsonData["online"] = online();
+    return jsonData;
+}
 }

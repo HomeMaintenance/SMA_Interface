@@ -9,6 +9,8 @@ public:
     virtual ~SunnyBoy() = default;
     virtual float get_available_power() const override;
 
+    virtual Json::Value toJson() const override;
+
 protected:
     virtual void set_available_power(float value) override;
 };
