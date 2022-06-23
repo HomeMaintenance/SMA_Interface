@@ -5,3 +5,4 @@
 #include <SMAStorageBoy.h>
 #include <SMAMqtt.h>
 #include <SMAModbusRelay.h>
+#include <SMAGridSource.h>

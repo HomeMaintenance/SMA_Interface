@@ -39,8 +39,10 @@ add_library(
     SMADeviceTypes.cpp
     SMADevice.h
     SMADevice.cpp
+    SMAGridSource.h
+    SMAGridSource.cpp
 )
-target_link_libraries(SMADevice PUBLIC ModbusDevice)
+target_link_libraries(SMADevice PUBLIC ModbusDevice PowerManagement)
 target_include_directories(SMADevice PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(
@@ -48,14 +50,14 @@ add_library(
     SMAStorageBoy.h
     SMAStorageBoy.cpp
 )
-target_link_libraries(SMAStorageBoy PUBLIC SMADevice PowerManagement)
+target_link_libraries(SMAStorageBoy PUBLIC SMADevice)
 
 add_library(
     SMASunnyBoy
     SMASunnyBoy.h
     SMASunnyBoy.cpp
 )
-target_link_libraries(SMASunnyBoy PUBLIC SMADevice PowerManagement)
+target_link_libraries(SMASunnyBoy PUBLIC SMADevice)
 
 add_library(
     SMAMqttInterface

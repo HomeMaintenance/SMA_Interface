@@ -67,6 +67,14 @@ void mains_test(){
     return;
 }
 
+void gridSource_test(){
+    std::shared_ptr<SMA::GridSource> gridSource = std::make_shared<SMA::GridSource>("192.168.178.128");
+    float available_power = gridSource->get_available_power();
+    std::cout << "grid available_power: " << available_power << " W" << std::endl;
+    std::cout << "-----------------" << std::endl;
+    return;
+}
+
 int main(int argc, char* argv[]){
     Test test;
     test.increment();
@@ -74,5 +82,6 @@ int main(int argc, char* argv[]){
     device_test();
     sunnyBoy_test();
     mains_test();
+    gridSource_test();
     return 0;
 }
