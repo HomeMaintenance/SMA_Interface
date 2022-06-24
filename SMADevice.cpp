@@ -53,7 +53,7 @@ namespace SMA{
             setOnline(test);
         }
         catch (std::exception& e){
-            std::cerr << e.what() << std::endl;
+            std::cerr << "Device " << ipAddress << " initalization failed:\n\t" << e.what() << std::endl;
             setOnline(false);
             disconnect();
         }
@@ -109,7 +109,15 @@ namespace SMA{
     void Device::reboot(){
         if(online()){
             mb::Register<int> reboot(this,40077);
-            reboot.setValue(1146);
+            bool ret = false;
+            std::cout << "trying to send reboot command" << std::endl;
+            reboot.setValue(1146, &ret);
+            if(ret)
+                std::cout << "sent reboot command to " << ipAddress << std::endl;
+            else{
+                std::cout << "could not send reboot command to " << ipAddress << std::endl;
+                return;
+            }
             setOnline(false);
             disconnect();
             while(!online()){
