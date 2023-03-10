@@ -23,13 +23,7 @@ FetchContent_Declare(
     GIT_TAG main
 )
 
-FetchContent_Declare(
-    mqtt_interface
-    GIT_REPOSITORY https://github.com/HomeMaintenance/Mqtt.git
-    GIT_TAG main
-)
-
-FetchContent_MakeAvailable(ObserverModel ModbusDevice_Interface mqtt_interface PowerManagement)
+FetchContent_MakeAvailable(ObserverModel ModbusDevice_Interface PowerManagement)
 
 add_subdirectory(test)
 
@@ -58,41 +52,6 @@ add_library(
     SMASunnyBoy.cpp
 )
 target_link_libraries(SMASunnyBoy PUBLIC SMADevice)
-
-add_library(
-    SMAMqttInterface
-    SMAMqttInterface.h
-    SMAMqttInterface.cpp
-)
-target_link_libraries(SMAMqttInterface PUBLIC mqtt)
-target_link_libraries(SMAMqttInterface PUBLIC ObserverModel)
-
-add_library(
-    SMADeviceMqtt
-    SMADeviceMqtt.h
-    SMADeviceMqtt.cpp
-)
-target_link_libraries(SMADeviceMqtt PUBLIC SMADevice)
-target_link_libraries(SMADeviceMqtt PUBLIC SMAMqttInterface)
-
-add_library(
-    SMAMainsMqtt
-    SMAMainsMqtt.h
-    SMAMainsMqtt.cpp
-)
-target_link_libraries(SMAMainsMqtt PUBLIC SMADevice)
-target_link_libraries(SMAMainsMqtt PUBLIC SMAMqttInterface)
-
-add_library(
-    SMAStorageBoyMqtt
-    SMAStorageBoyMqtt.h
-    SMAStorageBoyMqtt.cpp
-)
-target_link_libraries(SMAStorageBoyMqtt PUBLIC SMAStorageBoy)
-target_link_libraries(SMAStorageBoyMqtt PUBLIC SMAMqttInterface)
-
-add_library(SMAMqtt INTERFACE)
-target_link_libraries(SMAMqtt INTERFACE SMADeviceMqtt SMAMainsMqtt SMAStorageBoyMqtt)
 
 add_library(
     SMAModbusRelayInterface
@@ -130,7 +89,7 @@ add_library(SMAModbusRelay INTERFACE)
 target_link_libraries(SMAModbusRelay INTERFACE SMAModbusRelayDevice SMAModbusRelayMains SMAModbusRelayStorageBoy)
 
 add_library(SMALIB INTERFACE)
-target_link_libraries(SMALIB INTERFACE SMADevice SMASunnyBoy SMAStorageBoy SMAMqtt SMAModbusRelay)
+target_link_libraries(SMALIB INTERFACE SMADevice SMASunnyBoy SMAStorageBoy SMAModbusRelay)
 
 if(PROJECT_IS_TOP_LEVEL)
     find_package(Doxygen
